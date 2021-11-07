@@ -1,2 +1,2 @@
-# ibhujaz
-visit https://ibhujaz.online
+# Ibhujaz
+Visit: https://ibhujaz.online
