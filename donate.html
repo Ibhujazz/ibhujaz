@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--tab image-->
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://raw.githubusercontent.com/Ibhujazz/ibhujaz/main/favicon.png">
+
+
+    <!--tailwind css:-->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations</title>
+</head>
+
+<body>
+
+    <!--header-->
+    <header class="text-gray-400 bg-gray-900 body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+
+            <!-- Top Website logo -->
+            <a href="https://ibhujaz.online" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+                <img src="/MultiMedia/favicon.png" alt="logo" width="25">
+                <span class="ml-3 text-xl">IBHUJAZ</span>
+            </a>
+
+            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+                <!-- <a href="#" class="mr-5 hover:text-white">Home</a> -->
+                <a href="BestOfs/BestOfs.html" class="mr-5 hover:text-white">Best of's</a>
+                <a href="Brazzers/Brazzers.html" class="mr-5 hover:text-white">Brazzers</a>
+                <a href="RealityKings/RealityKings.html" class="mr-5 hover:text-white">Reality Kings</a>
+                <a href="Fakehub/Fakehub.html" class="mr-5 hover:text-white">Fakehub</a>
+                <a href="Mofos/Mofos.html" class="mr-5 hover:text-white">Mofos</a>
+                <a href="Milfed/Milfed.html" class="mr-5 hover:text-white">Milfed</a>
+                <a href="Bangbros/Bangbros.html" class="mr-5 hover:text-white">Bangbros</a>
+            </nav>
+            <button
+                class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Register
+                for mailing list
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <br><br><br>
+
+    <div id="smart-button-container">
+        <div style="text-align: center"><label for="description">Your name. (If you please) </label><input type="text"
+                name="descriptionInput" id="description" maxlength="127" value=""
+                style="border: 2px solid cyan;border-radius: 4px;"></div>
+        <p id="descriptionError" style="visibility: hidden; color:red; text-align: center;">Please enter a description
+        </p>
+        <div style="text-align: center"><label for="amount">How generous are you feeling today? </label><input
+                style="border: 2px solid cyan;border-radius: 4px;" name="amountInput" type="number" id="amount"
+                value=""><span> USD</span></div>
+        <p id="priceLabelError" style="visibility: hidden; color:red; text-align: center;">Please enter a price</p>
+        <div id="invoiceidDiv" style="text-align: center; display: none;"><label for="invoiceid"> </label><input
+                name="invoiceid" maxlength="127" type="text" id="invoiceid" value=""></div>
+        <p id="invoiceidError" style="visibility: hidden; color:red; text-align: center;">Please enter an Invoice ID</p>
+        <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
+    </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD"
+        data-sdk-integration-source="button-factory"></script>
+    <script>
+        function initPayPalButton() {
+            var description = document.querySelector('#smart-button-container #description');
+            var amount = document.querySelector('#smart-button-container #amount');
+            var descriptionError = document.querySelector('#smart-button-container #descriptionError');
+            var priceError = document.querySelector('#smart-button-container #priceLabelError');
+            var invoiceid = document.querySelector('#smart-button-container #invoiceid');
+            var invoiceidError = document.querySelector('#smart-button-container #invoiceidError');
+            var invoiceidDiv = document.querySelector('#smart-button-container #invoiceidDiv');
+
+            var elArr = [description, amount];
+
+            if (invoiceidDiv.firstChild.innerHTML.length > 1) {
+                invoiceidDiv.style.display = "block";
+            }
+
+            var purchase_units = [];
+            purchase_units[0] = {};
+            purchase_units[0].amount = {};
+
+            function validate(event) {
+                return event.value.length > 0;
+            }
+
+            paypal.Buttons({
+                style: {
+                    color: 'gold',
+                    shape: 'pill',
+                    label: 'paypal',
+                    layout: 'vertical',
+
+                },
+
+                onInit: function (data, actions) {
+                    actions.disable();
+
+                    if (invoiceidDiv.style.display === "block") {
+                        elArr.push(invoiceid);
+                    }
+
+                    elArr.forEach(function (item) {
+                        item.addEventListener('keyup', function (event) {
+                            var result = elArr.every(validate);
+                            if (result) {
+                                actions.enable();
+                            } else {
+                                actions.disable();
+                            }
+                        });
+                    });
+                },
+
+                onClick: function () {
+                    if (description.value.length < 1) {
+                        descriptionError.style.visibility = "visible";
+                    } else {
+                        descriptionError.style.visibility = "hidden";
+                    }
+
+                    if (amount.value.length < 1) {
+                        priceError.style.visibility = "visible";
+                    } else {
+                        priceError.style.visibility = "hidden";
+                    }
+
+                    if (invoiceid.value.length < 1 && invoiceidDiv.style.display === "block") {
+                        invoiceidError.style.visibility = "visible";
+                    } else {
+                        invoiceidError.style.visibility = "hidden";
+                    }
+
+                    purchase_units[0].description = description.value;
+                    purchase_units[0].amount.value = amount.value;
+
+                    if (invoiceid.value !== '') {
+                        purchase_units[0].invoice_id = invoiceid.value;
+                    }
+                },
+
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: purchase_units,
+                    });
+                },
+
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (orderData) {
+
+                        // Full available details
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+                        // Show a success message within this page, e.g.
+                        const element = document.getElementById('paypal-button-container');
+                        element.innerHTML = '';
+                        element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+                        // Or go to another URL:  actions.redirect('thank_you.html');
+
+                    });
+                },
+
+                onError: function (err) {
+                    console.log(err);
+                }
+            }).render('#paypal-button-container');
+        }
+        initPayPalButton();
+    </script>
+</body>
+
+</html>
