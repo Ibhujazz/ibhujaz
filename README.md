@@ -1,2 +1,2 @@
 # Ibhujaz
-Visit: https://ibhujaz.online
+Visit: https://ibhujazz.github.io/ibhujaz/
